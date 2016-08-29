@@ -1,0 +1,27 @@
+{
+    "name": "remoteauth-ng",
+    "version": "0.0.1",
+    "author": "Gilles Magalhaes",
+    "url": "https://github.com/tentwentyfour/remoteauth-ng",
+    "descriptionmsg": "remoteauth-ng-desc",
+    "license-name": "Apache-2.0",
+    "type": "auth",
+    "requires": {
+        "MediaWiki": ">= 1.27.0"
+    },
+    "MessagesDirs": {
+        "Blockdiag": [
+                "i18n"
+        ]
+    },
+    "AutoloadClasses": {
+        "RemoteAuthNG": "remoteauth-ng.php"
+    },
+    "SessionProviders": {
+        "RemoteAuthNG": {
+            "class": "RemoteAuthNG",
+            "args": [ ]
+        }
+    },
+    "manifest_version": 1
+}
