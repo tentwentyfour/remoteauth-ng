@@ -23,4 +23,4 @@ Installation
     wfLoadExtension('remoteauth-ng');
 ```
 
-3.
+3. Sit back and relax. :sunglasses:

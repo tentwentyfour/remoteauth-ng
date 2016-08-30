@@ -20,7 +20,7 @@
     "SessionProviders": {
         "RemoteAuthNG": {
             "class": "RemoteAuthNG",
-            "args": [ ]
+            "args": [ {"priority": 99} ]
         }
     },
     "manifest_version": 1
