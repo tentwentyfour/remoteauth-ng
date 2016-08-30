@@ -1,8 +1,6 @@
 Remote Auth MediaWiki extension
 ===============================
 
-*Work in Progress*
-
 Integrate MediaWiki with third-party authentication services using the REMOTE_USER environment variable.
 
 Requirements
