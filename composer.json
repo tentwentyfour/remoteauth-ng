@@ -8,7 +8,7 @@
         "session",
         "authentication"
     ],
-    "version": "1.0.0",
+    "version": "1.0.1",
     "require": {
         "php": ">=5.4",
         "composer/installers": "~1.0"
