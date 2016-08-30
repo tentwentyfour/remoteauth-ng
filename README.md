@@ -12,13 +12,13 @@ Installation
 ------------
 
 1. Clone this repository inside your MediaWiki `extensions` directory:
-```
+    ```
     $ git clone https://github.com/tentwentyfour/remoteauth-ng
-```
+    ```
 
 2. Add this line at the end of your `LocalSettings.php`:
-```
+    ```
     wfLoadExtension('remoteauth-ng');
-```
+    ```
 
 3. Sit back and relax. :sunglasses:
