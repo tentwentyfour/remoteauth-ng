@@ -22,6 +22,13 @@ class RemoteAuthNG extends CookieSessionProvider
         } else {
             // see if we can authenticate the user by looking at the REMOTE_USER
             // variable
+
+            try {
+                $userInfo = UserInfo::newFromName($this->getRemoteUsername());
+            } catch (\InvalidArgumentException $ex) {
+                return null;
+            }
+
             $sessionId = $this->getCookie($request, $this->params['sessionName'], '');
             $info = [
                 'provider' => $this,
@@ -30,12 +37,6 @@ class RemoteAuthNG extends CookieSessionProvider
             if (SessionManager::validateSessionId($sessionId)) {
                 $info['id'] = $sessionId;
                 $info['persisted'] = true;
-            }
-
-            try {
-                $userInfo = UserInfo::newFromName($this->getRemoteUsername());
-            } catch (\InvalidArgumentException $ex) {
-                return null;
             }
 
             $token = $userInfo->getToken();
