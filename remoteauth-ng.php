@@ -1,5 +1,6 @@
 <?php
 
+use User;
 use MediaWiki\Session\SessionBackend;
 use MediaWiki\Session\SessionInfo;
 use MediaWiki\Session\UserInfo;
@@ -15,6 +16,9 @@ class RemoteAuthNG extends CookieSessionProvider
      */
     public function provideSessionInfo(WebRequest $request)
     {
+        // load config
+        global $wgRemoteAuthNgAutoCreateUser;
+
         $couldAuthenticate = parent::provideSessionInfo($request);
 
         if ($couldAuthenticate !== null) {
@@ -23,11 +27,22 @@ class RemoteAuthNG extends CookieSessionProvider
             // see if we can authenticate the user by looking at the REMOTE_USER
             // variable
 
-            try {
-                $userInfo = UserInfo::newFromName($this->getRemoteUsername());
-            } catch (\InvalidArgumentException $ex) {
+            $user = User::newFromName($this->getRemoteUsername());
+            if (!$user) {
                 return null;
             }
+
+            // create user if not exists
+            if (!$user->isLoggedIn()) {
+                if ($wgRemoteAuthNgAutoCreateUser) {
+                    $user->addToDatabase();
+                } else {
+                    return null;
+                }
+            }
+
+            // get user info
+            $userInfo = UserInfo::newFromUser($user);
 
             $sessionId = $this->getCookie($request, $this->params['sessionName'], '');
             $info = [
