@@ -21,6 +21,8 @@ Installation
     wfloadExtension( 'RemoteauthNg' );
     // enable/disable auto user creation
     $wgRemoteAuthNgAutoCreateUser = false;
+    // force remote user
+    $wgRemoteAuthNgForceRemoteUser = true;
     ```
 
 3. Sit back and let the magic sink in. :sunglasses:

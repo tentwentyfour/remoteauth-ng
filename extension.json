@@ -18,7 +18,8 @@
         "RemoteAuthNG": "remoteauth-ng.php"
     },
     "config": {
-        "RemoteAuthNgAutoCreateUser": false
+        "RemoteAuthNgAutoCreateUser": false,
+        "RemoteAuthNgForceRemoteUser": true
     },
     "SessionProviders": {
         "RemoteAuthNG": {
