@@ -18,48 +18,60 @@ class RemoteAuthNG extends CookieSessionProvider
     {
         // load config
         global $wgRemoteAuthNgAutoCreateUser;
+        global $wgRemoteAuthNgForceRemoteUser;
 
         $couldAuthenticate = parent::provideSessionInfo($request);
 
-        if ($couldAuthenticate !== null) {
-            return $couldAuthenticate;
-        } else {
-            // see if we can authenticate the user by looking at the REMOTE_USER
-            // variable
+        // username has to begin with a capital letter
+        $remoteUserName = ucfirst($this->getRemoteUsername());
 
-            $user = User::newFromName($this->getRemoteUsername());
-            if (!$user) {
+        if ($couldAuthenticate !== null) {
+            if (!$wgRemoteAuthNgForceRemoteUser) {
+                return $couldAuthenticate;
+            }
+
+            // check if remote user is same as currently authenticated user
+            $currentUserName = $couldAuthenticate->getUserInfo()->getName();
+            if ($currentUserName === $remoteUserName) {
+                return $couldAuthenticate;
+            }
+        }
+
+        // see if we can authenticate the user by looking at the REMOTE_USER
+        // variable
+
+        $user = User::newFromName($remoteUserName);
+        if (!$user) {
+            return null;
+        }
+
+        // create user if not exists
+        if (!$user->isLoggedIn()) {
+            if ($wgRemoteAuthNgAutoCreateUser) {
+                $user->addToDatabase();
+            } else {
                 return null;
             }
-
-            // create user if not exists
-            if (!$user->isLoggedIn()) {
-                if ($wgRemoteAuthNgAutoCreateUser) {
-                    $user->addToDatabase();
-                } else {
-                    return null;
-                }
-            }
-
-            // get user info
-            $userInfo = UserInfo::newFromUser($user);
-
-            $sessionId = $this->getCookie($request, $this->params['sessionName'], '');
-            $info = [
-                'provider' => $this,
-                'forceHTTPS' => $this->getCookie($request, 'forceHTTPS', '', false)
-            ];
-            if (SessionManager::validateSessionId($sessionId)) {
-                $info['id'] = $sessionId;
-                $info['persisted'] = true;
-            }
-
-            $token = $userInfo->getToken();
-            $info['userInfo'] = $userInfo->verified();
-            $info['persisted'] = true;
-
-            return new SessionInfo($this->priority, $info);
         }
+
+        // get user info
+        $userInfo = UserInfo::newFromUser($user);
+
+        $sessionId = $this->getCookie($request, $this->params['sessionName'], '');
+        $info = [
+            'provider' => $this,
+            'forceHTTPS' => $this->getCookie($request, 'forceHTTPS', '', false)
+        ];
+        if (SessionManager::validateSessionId($sessionId)) {
+            $info['id'] = $sessionId;
+            $info['persisted'] = true;
+        }
+
+        $token = $userInfo->getToken();
+        $info['userInfo'] = $userInfo->verified();
+        $info['persisted'] = true;
+
+        return new SessionInfo($this->priority, $info);
     }
 
     /**
@@ -74,6 +86,6 @@ class RemoteAuthNG extends CookieSessionProvider
         if (isset($_SERVER['REDIRECT_REMOTE_USER'])) {
             return $_SERVER['REDIRECT_REMOTE_USER'];
         }
-        return "";
+        return '';
     }
 }
