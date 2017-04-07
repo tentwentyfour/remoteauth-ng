@@ -17,6 +17,9 @@
     "AutoloadClasses": {
         "RemoteAuthNG": "remoteauth-ng.php"
     },
+    "config": {
+        "RemoteAuthNgAutoCreateUser": false
+    },
     "SessionProviders": {
         "RemoteAuthNG": {
             "class": "RemoteAuthNG",

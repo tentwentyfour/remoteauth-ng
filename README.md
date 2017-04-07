@@ -16,9 +16,11 @@ Installation
     $ composer require tentwentyfour/remoteauth-ng
     ```
 
-2. Add this line at the end of your `LocalSettings.php`:
+2. Add the following lines at the end of your `LocalSettings.php`:
     ```
     wfloadExtension( 'RemoteauthNg' );
+    // enable/disable auto user creation
+    $wgRemoteAuthNgAutoCreateUser = false;
     ```
 
 3. Sit back and let the magic sink in. :sunglasses:
