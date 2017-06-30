@@ -1,3 +1,8 @@
+__DEPRECATED!__
+
+Please note that this extension is deprecated in favor or the extension developed and discussed on the WikiMedia Phabricator instance: https://phabricator.wikimedia.org/T110292
+
+
 Remote Auth MediaWiki extension
 ===============================
 
